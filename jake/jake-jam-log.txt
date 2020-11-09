@@ -1,0 +1,67 @@
+okay, just got the pi zero w.
+
+did some googling.
+
+it looks like i'll need a keyboard, mouse, and screen to play with the pi - i wonder if i can beam it to my laptop, or i need a whole separate screen.
+
+i think the next step is to set up the os using the raspberry pi imager: https://www.raspberrypi.org/downloads/
+
+i installed raspberry pi os lite (32-bit), which i'm pretty sure is the raspbian fork of debian without any desktop windowing or gui stuff. it's less than 500mb and i hope light on the processor.
+
+something from the pi website: a command to install the pi imager within the pi os: sudo apt install rpi-imager. my god, they're learning how to replicate themselves. nature, uh, finds a way.
+
+i've got a small tubular rechargable battery. i'm sure it's just some airport kiosk junk but i bet it'll work well for now. if it is a good specimen, i could make the raspberry jam into a long sceptre of raw bluetooth power.
+
+following the instructions on https://www.techcoil.com/blog/how-to-use-a-raspberry-pi-zero-w/ i am making an ssh file and a wpa_supplicant.conf file to connect to wifi and ssh into the pi. i have no idea how to do any of those things so we'll just see how this plays out.
+
+okay, i found a tutorial at https://www.raspberrypi-spy.co.uk/2017/04/manually-setting-up-pi-wifi-using-wpa_supplicant-conf/ which has some sample code for connecting to wifi networks. let's see if it works...
+
+it's making blinkies with the green LED...
+
+pinging...
+
+"ping request could not find host raspberry pi"
+
+shit.
+
+found it!! from https://www.shellhacks.com/find-raspberry-pi-ip-on-network-windows-macos-linux/ i learned that the MAC address for a pi starts with either B8:27:EB or DC:A6:32. using the "arp -a" terminal command i found it and pinged it. my google-fu is strong this saturday.
+
+so, i just tried to ssh into the pi and i got a "port 22: connection refused" error. yeesh
+
+oh, i just looked at https://phoenixnap.com/kb/enable-ssh-raspberry-pi and it says that the ssh filename should just be "ssh". i think i made the filename ".ssh". i'll change it now.
+
+baddabing baddaboom. i'm having fun today.
+
+WE'RE IN !!!
+
+okay... now what?
+
+"sudo raspi-config" gave me some options for setup. i changed the ssh password.
+
+the "python" command opened up a shell. B^) we hacking now
+
+okay, so apparently using a command like "scp -r /python-apps pi@192.168.x.xxx:~/" securely copies files over to the pi. i don't know much about daemons but this tutorial says they run 24/7, and using "systemd" (what's that?) i can make daemons. cool.
+
+now i'm navigating around, first using the "cd /" command to go to the root folder. whee!
+
+good tutorial on navigating around with the pi running raspbian: https://retroresolution.com/2015/12/12/navigating-the-raspberry-pis-file-system-raspbian-linux-shell-commands-and-tools-part-2/
+
+now to the bluetooth experimentation. looking at https://blog.adafruit.com/2020/04/17/starting-with-raspberry-pi-bluetooth-python-python-bluetooth-raspberrypi-piday-raspberry_pi/ i am starting to apt-get the python libraries needed for bluetooth connectivity
+
+had to install pip through https://pip.pypa.io/en/stable/installing/ first... waiting waiting waiting for my "python get-pip.py" command to follow through...
+
+decided to look at https://www.raspberrypi.org/documentation/linux/software/python.md and used the "sudo apt install python3-pip" instead. i navigated to the "/" folder of the pi - i hope that is in the PATH or whatever. not sure about folders like bin and var and usr - what are they used for, are they suggestions or do they have hardcoded permissions?
+
+an answer: https://serverfault.com/questions/24523/meaning-of-directories-on-unix-and-unix-like-systems good to know /usr stands for "unix system resources" and NOT user... i woulda started filling that with all my junk
+
+this is going to be important: https://raspberrytips.com/raspberry-pi-commands/
+
+okay, i made a directory for the project: /home/jam. nice. okay, also we just learned that nano is a text editor. cool.
+
+the speaker i have at home has the address 30:23:37:CD:3B:B4. let's see if we can connect
+
+hmmm... looking at https://pimylifeup.com/raspberry-pi-bluetooth/ i think i need some help with the ol how-the-hell-does-bluetooth-work...
+
+okay, installing pyaudio on the recommendation of https://stackoverflow.com/questions/20760589/list-all-audio-devices-with-pythons-pyaudio-portaudio-binding, which has some example code to list audio devices. maybe after pairing a bluetooth speaker will show up on this list?
+
+also using pip to install sounddevice, a library for connecting to sound devices. am i already bloating my pi? bah. i am having fun.
